@@ -1,0 +1,32 @@
+<h2>Cập nhật thông tin đặt chỗ</h2>
+
+<form asp-action="UpdateHK" method="post">
+    <input type="hidden" name="MACH" value="@ViewBag.mach" />
+
+    <div>
+        <label>Mã hành khách:</label>
+        <input type="text" name="MAHK" value="@ViewBag.mahk" readonly />
+    </div>
+
+    <div>
+        <label>Họ tên hành khách:</label>
+        <input type="text" name="HOTEN" value="@ViewBag.tenhk" />
+    </div>
+
+    <div>
+        <label>Số ghế:</label>
+        <input type="number" name="SOGHE" required />
+    </div>
+
+    <div>
+        <label>Loại ghế:</label>
+        <select name="LOAIGHE" required>
+            <option value="0">THƯỜNG</option>
+            <option value="1">VIP</option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Cập nhật</button>
+    </div>
+</form>

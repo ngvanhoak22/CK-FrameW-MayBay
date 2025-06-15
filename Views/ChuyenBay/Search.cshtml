@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Xem thông tin chuyến bay";
+}
+
+<h2>Xem thông tin chuyến bay</h2>
+
+<form asp-action="Details" method="get">
+    <div class="form-group">
+        <label>Mã chuyến bay</label>
+        <input name="maChuyen" class="form-control" value="CBO0001" />
+    </div>
+    <button type="submit" class="btn btn-primary">Liệt kê</button>
+</form>

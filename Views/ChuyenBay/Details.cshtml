@@ -1,0 +1,92 @@
+@model ChuyenBayViewModel
+
+@{
+    ViewData["Title"] = "Thông tin chuyến bay";
+}
+
+<h2>Thông tin chuyến bay</h2>
+
+<div>
+    <div class="form-group">
+        <label>Mã chuyến bay</label>
+        <input asp-for="ChuyenBay.MACH" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Tên chuyến</label>
+        <input asp-for="ChuyenBay.CHUYEN" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Điểm đi</label>
+        <input asp-for="ChuyenBay.DDI" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Điểm đến</label>
+        <input asp-for="ChuyenBay.DDEN" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Ngày bay</label>
+        <input asp-for="ChuyenBay.NGAY" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Giờ bay</label>
+        <input asp-for="ChuyenBay.GBAY" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Giờ đến</label>
+        <input asp-for="ChuyenBay.GDEN" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Số ghế Thường</label>
+        <input value="@Model.SoHanhKhachThuong/@Model.ChuyenBay.THUONG" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Số ghế VIP</label>
+        <input value="@Model.SoHanhKhachVIP/@Model.ChuyenBay.VIP" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+
+        <form asp-action="ThemHK" method="get" class="mb-3">
+            <input type="hidden" name="maChuyen" value="@Model.ChuyenBay.MACH" />
+            <button type="submit" class="btn btn-secondary">Thêm hành khách</button>
+        </form>
+    </div>
+</div>
+
+<h3>Danh sách hành khách</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã hành khách</th>
+            <th>Họ tên</th>
+            <th>Điện thoại</th>
+            <th>Loại ghế</th>
+            <th>Số ghế</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hk in Model.HanhKhachs)
+        {
+            <tr>
+                <td>@hk.MAHK</td>
+                <td>@hk.HOTEN</td>
+                <td>@hk.DIENTHOAI</td>
+                <td>@(hk.LOAIGHE == true ? "VIP" : "Thường")</td>
+                <td>@hk.SOGHE</td>
+                <td>
+
+                    <form asp-action="UpdateHK" method="get">
+                        <input type="hidden" value="@Model.ChuyenBay.MACH" name="mach">
+                        <input type="hidden" value="@hk.MAHK" name="mahk">
+                        <button type="submit">Sửa</button>
+                    </form>
+                    <form asp-action="DeleteHK" method="post">
+                        <input type="hidden" value="@Model.ChuyenBay.MACH" name="mach">
+                        <input type="hidden" value="@hk.MAHK" name="mahk">
+                        <button type="submit">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
