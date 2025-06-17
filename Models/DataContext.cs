@@ -30,8 +30,12 @@ public class DataContext
     }
 
     // Lấy thông tin chuyến bay theo mã
-    public ChuyenBay GetChuyenBay(string maChuyen)
+    public ChuyenBayViewModel GetChuyenBay(string maChuyen)
     {
+        var hanhKhachs = new List<CT_CB_HK>();
+        var ChuyenBay = new ChuyenBay();
+        int thuong = 0;
+        int vip = 0;
         using (var connection = new SqlConnection(_connectionString))
         {
             connection.Open();
@@ -43,7 +47,7 @@ public class DataContext
                 {
                     if (reader.Read())
                     {
-                        return new ChuyenBay
+                        ChuyenBay = new ChuyenBay
                         {
                             MACH = reader["MACH"].ToString(),
                             CHUYEN = reader["CHUYEN"].ToString(),
@@ -57,24 +61,13 @@ public class DataContext
                             MAMB = reader["MAMB"].ToString()
                         };
                     }
-                    return null;
                 }
             }
-        }
-    }
-
-    // Lấy danh sách hành khách của chuyến bay
-    public List<CT_CB_HK> GetHanhKhachByChuyenBay(string maChuyen)
-    {
-        var hanhKhachs = new List<CT_CB_HK>();
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            connection.Open();
-            var query = @"SELECT HK.MAHK, HK.HOTEN, HK.DIENTHOAI, CT.LOAIGHE, CT.SOGHE
+            var query1 = @"SELECT HK.MAHK, HK.HOTEN, HK.DIENTHOAI, CT.LOAIGHE, CT.SOGHE
                          FROM HANHKHACH HK
                          JOIN CT_CB CT ON HK.MAHK = CT.MAHK
                          WHERE CT.MACH = @MACH";
-            using (var command = new SqlCommand(query, connection))
+            using (var command = new SqlCommand(query1, connection))
             {
                 command.Parameters.AddWithValue("@MACH", maChuyen);
                 using (var reader = command.ExecuteReader())
@@ -92,19 +85,8 @@ public class DataContext
                     }
                 }
             }
-        }
-        return hanhKhachs;
-    }
-
-    // Đếm số hành khách Thường và VIP
-    public (int Thuong, int VIP) GetSoHanhKhachLoaiGhe(string maChuyen)
-    {
-        int thuong = 0, vip = 0;
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            connection.Open();
-            var query = "SELECT LOAIGHE, COUNT(*) as SoLuong FROM CT_CB WHERE MACH = @MACH GROUP BY LOAIGHE";
-            using (var command = new SqlCommand(query, connection))
+            var query2 = "SELECT LOAIGHE, COUNT(*) as SoLuong FROM CT_CB WHERE MACH = @MACH GROUP BY LOAIGHE";
+            using (var command = new SqlCommand(query2, connection))
             {
                 command.Parameters.AddWithValue("@MACH", maChuyen);
                 using (var reader = command.ExecuteReader())
@@ -119,8 +101,74 @@ public class DataContext
                 }
             }
         }
-        return (thuong, vip);
+        return new ChuyenBayViewModel
+        {
+            ChuyenBay = ChuyenBay,
+            HanhKhachs = hanhKhachs,
+            SoHanhKhachThuong = thuong,
+            SoHanhKhachVIP = vip
+        };
+
     }
+
+    // Lấy danh sách hành khách của chuyến bay
+    // public List<CT_CB_HK> GetHanhKhachByChuyenBay(string maChuyen)
+    // {
+    //     var hanhKhachs = new List<CT_CB_HK>();
+    //     using (var connection = new SqlConnection(_connectionString))
+    //     {
+    //         connection.Open();
+    //         var query = @"SELECT HK.MAHK, HK.HOTEN, HK.DIENTHOAI, CT.LOAIGHE, CT.SOGHE
+    //                      FROM HANHKHACH HK
+    //                      JOIN CT_CB CT ON HK.MAHK = CT.MAHK
+    //                      WHERE CT.MACH = @MACH";
+    //         using (var command = new SqlCommand(query, connection))
+    //         {
+    //             command.Parameters.AddWithValue("@MACH", maChuyen);
+    //             using (var reader = command.ExecuteReader())
+    //             {
+    //                 while (reader.Read())
+    //                 {
+    //                     hanhKhachs.Add(new CT_CB_HK
+    //                     {
+    //                         MAHK = reader["MAHK"].ToString(),
+    //                         HOTEN = reader["HOTEN"].ToString(),
+    //                         DIENTHOAI = reader["DIENTHOAI"].ToString(),
+    //                         LOAIGHE = Convert.ToBoolean(reader["LOAIGHE"]),
+    //                         SOGHE = reader["SOGHE"].ToString()
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return hanhKhachs;
+    // }
+
+    // // Đếm số hành khách Thường và VIP
+    // public (int Thuong, int VIP) GetSoHanhKhachLoaiGhe(string maChuyen)
+    // {
+    //     int thuong = 0, vip = 0;
+    //     using (var connection = new SqlConnection(_connectionString))
+    //     {
+    //         connection.Open();
+    //         var query = "SELECT LOAIGHE, COUNT(*) as SoLuong FROM CT_CB WHERE MACH = @MACH GROUP BY LOAIGHE";
+    //         using (var command = new SqlCommand(query, connection))
+    //         {
+    //             command.Parameters.AddWithValue("@MACH", maChuyen);
+    //             using (var reader = command.ExecuteReader())
+    //             {
+    //                 while (reader.Read())
+    //                 {
+    //                     bool loaiGhe = Convert.ToBoolean(reader["LOAIGHE"]);
+    //                     int soLuong = Convert.ToInt32(reader["SoLuong"]);
+    //                     if (loaiGhe) vip = soLuong;
+    //                     else thuong = soLuong;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return (thuong, vip);
+    // }
 
     public void DeleteHK(string mahk, string mach)
     {

@@ -21,23 +21,7 @@ public class ChuyenBayController : Controller
     public IActionResult Details(string maChuyen)
     {
         var chuyenBay = _context.GetChuyenBay(maChuyen);
-        if (chuyenBay == null)
-        {
-            return NotFound();
-        }
-
-        var hanhKhachs = _context.GetHanhKhachByChuyenBay(maChuyen);
-        var (soHanhKhachThuong, soHanhKhachVIP) = _context.GetSoHanhKhachLoaiGhe(maChuyen);
-
-        var viewModel = new ChuyenBayViewModel
-        {
-            ChuyenBay = chuyenBay,
-            HanhKhachs = hanhKhachs,
-            SoHanhKhachThuong = soHanhKhachThuong,
-            SoHanhKhachVIP = soHanhKhachVIP
-        };
-
-        return View(viewModel);
+        return View(chuyenBay);
     }
 
     [HttpPost]
@@ -66,21 +50,8 @@ public class ChuyenBayController : Controller
     public IActionResult ThemHK(string maChuyen)
     {
         var chuyenBay = _context.GetChuyenBay(maChuyen);
-        if (chuyenBay == null)
-        {
-            return NotFound();
-        }
 
-        var (soHanhKhachThuong, soHanhKhachVIP) = _context.GetSoHanhKhachLoaiGhe(maChuyen);
-
-        var viewModel = new ChuyenBayViewModel
-        {
-            ChuyenBay = chuyenBay,
-            SoHanhKhachThuong = soHanhKhachThuong,
-            SoHanhKhachVIP = soHanhKhachVIP
-        };
-
-        return View(viewModel);
+        return View(chuyenBay);
     }
 
     [HttpPost]

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("demaybay")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ae0035f2b84956564a4b19c57ed81bcb9c43c41")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+639b585a62351d2ec6ae9144e1c44c0b3f07ac40")]
 [assembly: System.Reflection.AssemblyProductAttribute("demaybay")]
 [assembly: System.Reflection.AssemblyTitleAttribute("demaybay")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
