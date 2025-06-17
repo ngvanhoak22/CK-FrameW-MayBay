@@ -144,3 +144,4 @@ D:\Nam3\Framework\demaybay\obj\Debug\net9.0\refint\demaybay.dll
 D:\Nam3\Framework\demaybay\obj\Debug\net9.0\demaybay.pdb
 D:\Nam3\Framework\demaybay\obj\Debug\net9.0\demaybay.genruntimeconfig.cache
 D:\Nam3\Framework\demaybay\obj\Debug\net9.0\ref\demaybay.dll
+D:\Nam3\Framework\demaybay\obj\Debug\net9.0\demaybay.sourcelink.json
